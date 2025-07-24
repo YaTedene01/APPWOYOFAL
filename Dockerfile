@@ -1,12 +1,15 @@
-FROM php:8.2-apache
+FROM php:8.2-fpm
 
-# Copie le code dans le conteneur
-COPY ./public /var/www/html/
+WORKDIR /var/www/html
 
-# Active les extensions PHP nécessaires (ajoute celles dont tu as besoin)
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+# Install PostgreSQL extensions
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql
 
-# Donne les droits à Apache
-RUN chown -R www-data:www-data /var/www/html
+# Copy entire project
+COPY . .
 
-EXPOSE 80
+# Verify bootstrap.php exists and set permissions
+RUN ls -la /var/www/html/config/bootstrap.php || echo "bootstrap.php not found" && \
+    chown -R www-data:www-data /var/www/html

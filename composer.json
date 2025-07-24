@@ -2,7 +2,16 @@
     "name": "app/appdaf",
     "autoload": {
         "psr-4": {
-            "App\\APPDAFF\\": "src/"
+            "App\\APPDAFF\\": "src/",
+            "App\\entity\\":"src/entity/",
+            "App\\repository\\":"src/repository/",
+            "App\\service\\":"src/service/",
+            "App\\controller\\":"src/controller/",
+            "App\\config\\":"app/config/",
+            "App\\core\\":"app/core/",
+            "App\\abstract\\":"app/core/abstract/",
+            "App\\middlewares\\":"app/core/middlewares/",
+            "App\\routes\\":"routes/"
         }
     },
     "authors": [
@@ -12,6 +21,11 @@
         }
     ],
     "require": {
-        "vlucas/phpdotenv": "^5.6"
+        "vlucas/phpdotenv": "^5.6",
+        "cloudinary/cloudinary_php": "^3.1"
+    },
+     "scripts": {
+        "database:migrate": "php migrations/migration.php",
+         "database:seed": "php seeders/seeder.php"
     }
 }

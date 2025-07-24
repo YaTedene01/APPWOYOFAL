@@ -1,8 +1,53 @@
-
 services:
   app:
     build: .
-    ports:
-      - "8081:80"
     volumes:
-      - ./public:/var/www/html
+      - .:/var/www/html
+    environment:
+      - APP_ROOT=/var/www/html
+    working_dir: /var/www/html
+    networks:
+      - appnet
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8082:80"
+    volumes:
+      - .:/var/www/html
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
+    networks:
+      - appnet
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: yatedene
+      POSTGRES_PASSWORD: faye0000
+      POSTGRES_DB: appdb
+    ports:
+      - "5434:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - appnet
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5051:80"
+    depends_on:
+      - db
+    networks:
+      - appnet
+
+volumes:
+  pgdata:
+
+networks:
+  appnet:
