@@ -5,7 +5,7 @@ class Router{
     {
         $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $requestMethod = $_SERVER['REQUEST_METHOD'];
-
+  
         foreach ($routes as $route) {
             [$method, $pattern, $handler] = $route;
 
@@ -36,6 +36,8 @@ class Router{
                 return;
             }
         }
+
+ 
 
         // 404 si aucune route ne correspond
         http_response_code(404);

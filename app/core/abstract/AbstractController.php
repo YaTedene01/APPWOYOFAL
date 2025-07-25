@@ -1,5 +1,5 @@
 <?php
-namespace App\Core\Abstract;
+namespace App\core\abstract;
 
 use App\core\App;
 use App\core\Session;

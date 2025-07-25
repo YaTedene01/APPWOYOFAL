@@ -10,19 +10,29 @@ class DatabaseSeeder {
 
     public function __construct()
     {
-        // Connexion à PostgreSQL
-        $dsn = "pgsql:host=localhost;dbname=appdb;port=5434";
-        $this->pdo = new PDO($dsn, DB_USER, DB_PASSWORD);
-        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        // Configuration Cloudinary
-        $this->cloudinary = new Cloudinary([
-            'cloud' => [
-                'cloud_name' => CLOUD_NAME,
-                'api_key'    => PUBLIC_KEY,
-                'api_secret' => PRIVATE_KEY
-            ]
-        ]);
+        try {
+            echo "🔄 Tentative de connexion à la base de données...\n";
+            echo "Host: " . DB_HOST . "\n";
+            echo "Port: " . DB_PORT . "\n";
+            echo "Database: " . DB_NAME . "\n";
+            
+            $dsn = DSN;
+            $this->pdo = new PDO($dsn, DB_USER, DB_PASSWORD);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            echo "✅ Connecté à la base de données Railway avec succès\n";
+            
+            // Configuration Cloudinary
+            $this->cloudinary = new Cloudinary([
+                'cloud' => [
+                    'cloud_name' => CLOUD_NAME,
+                    'api_key'    => PUBLIC_KEY,
+                    'api_secret' => PRIVATE_KEY
+                ]
+            ]);
+        } catch (PDOException $e) {
+            die("❌ Erreur de connexion: " . $e->getMessage() . "\n");
+        }
     }
 
     public function run()

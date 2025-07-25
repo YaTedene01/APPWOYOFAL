@@ -34,9 +34,12 @@ private static ?CitoyenRepository $instance=null;
     
     public function findAll(): array
     {
-        $sql = "SELECT * FROM $this->table";
-            $stmt = $this->pdo->query($sql);
+        $sql = "SELECT * FROM citoyen";
+            $stmt = $this->pdo->prepare($sql);
             $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+            // var_dump($data);
+            // die('Data fetched successfully');
 
             return array_map(fn($item) => Citoyen::toObject($item), $data);
         }

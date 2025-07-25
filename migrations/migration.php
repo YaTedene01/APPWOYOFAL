@@ -10,7 +10,7 @@ $dbport = DB_PORT;
 
 try {
     // Connect to postgres database first
-    $pdo = new \PDO("pgsql:host=$dbhost;port=$dbport;dbname=postgres", $dbuser, $dbpassword);
+    $pdo = new \PDO("pgsql:host=$dbhost;port=$dbport;dbname=$dbname", $dbuser, $dbpassword);
     $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     
     // Close all connections to the database

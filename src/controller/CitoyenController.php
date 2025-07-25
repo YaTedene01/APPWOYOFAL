@@ -1,7 +1,7 @@
 <?php
 namespace App\controller;
 
-use App\Core\Abstract\AbstractController;
+use App\core\abstract\AbstractController;
 use App\core\App;
 use App\service\CitoyenService;
 
@@ -48,6 +48,7 @@ class CitoyenController extends AbstractController{
 
     public function findAll()
     {
+        
         header('Content-Type: application/json');
         $citoyens = $this->citoyenService->findAll();
 

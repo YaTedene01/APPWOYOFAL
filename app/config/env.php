@@ -3,7 +3,12 @@ require_once __DIR__.'/../../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
+$envPath = realpath(__DIR__ . '/../../');
+if (!$envPath) {
+    throw new Exception("Impossible de trouver le chemin racine");
+}
+
+$dotenv = Dotenv::createImmutable($envPath);
 $dotenv->load();
 
 define('DSN',$_ENV['DSN']);

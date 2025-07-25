@@ -2,14 +2,20 @@ FROM php:8.2-fpm
 
 WORKDIR /var/www/html
 
-# Install PostgreSQL extensions
+# Installation des extensions PostgreSQL
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     && docker-php-ext-install pdo pdo_pgsql
 
-# Copy entire project
-COPY . .
+# Copie des fichiers du projet
+COPY --chown=www-data:www-data . .
 
-# Verify bootstrap.php exists and set permissions
-RUN ls -la /var/www/html/config/bootstrap.php || echo "bootstrap.php not found" && \
-    chown -R www-data:www-data /var/www/html
+# Configuration du fichier d'environnement
+COPY --chown=www-data:www-data .env.docker .env
+
+# Debug et vérification
+RUN set -x && \
+    pwd && \
+    ls -la && \
+    ls -la .env && \
+    chmod 644 .env
