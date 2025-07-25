@@ -1,18 +1,19 @@
 services:
   app:
     build: .
+    ports:
+      - "9000:9000"  # Port PHP-FPM
     volumes:
       - .:/var/www/html
     environment:
       - APP_ROOT=/var/www/html
-    working_dir: /var/www/html
     networks:
       - appnet
 
   nginx:
     image: nginx:latest
     ports:
-      - "8082:80"
+      - "8082:80"  # Port HTTP principal
     volumes:
       - .:/var/www/html
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
