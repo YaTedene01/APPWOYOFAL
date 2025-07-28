@@ -61,4 +61,18 @@ class ReçuRepository extends AbstractRepository {
      public function selectBy(Array $filtre){
 
      }
+     public function getSommeConsommation(string $numero_compteur, string $debut, string $fin): float {
+        $sql = "SELECT COALESCE(SUM(prix), 0) as total FROM recu 
+                WHERE numero_compteur = :numero_compteur 
+                AND date BETWEEN :debut AND :fin";
+                
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'numero_compteur' => $numero_compteur,
+            'debut' => $debut,
+            'fin' => $fin
+        ]);
+        
+        return (float) $stmt->fetchColumn();
+    }
 }
