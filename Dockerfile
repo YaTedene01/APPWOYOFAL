@@ -18,4 +18,4 @@ RUN set -x && \
     pwd && \
     ls -la && \ 
     ls -la .env && \ 
-    chmod 644 .env
+    chmod 644 .env 
