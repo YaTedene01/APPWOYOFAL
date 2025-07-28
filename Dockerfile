@@ -12,7 +12,7 @@ COPY --chown=www-data:www-data . .
 
 # Configuration du fichier d'environnement
 COPY --chown=www-data:www-data .env.docker .env
-
+EXPOSE 9000
 # Debug et vérification
 RUN set -x && \
     pwd && \
