@@ -1,7 +1,0 @@
-@baseUrl = http://localhost:8082/api
-
-GET {{baseUrl}}/citoyens/1234567899
-Content-Type: application/json
-
-GET {{baseUrl}}/citoyens/9876543210987
-Content-Type: application/json

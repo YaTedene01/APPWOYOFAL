@@ -3,8 +3,10 @@ namespace App\core;
 use App\core\Database;
 use App\core\Router;
 use App\core\Session;
-use App\repository\CitoyenRepository;
-use App\service\CitoyenService;
+use App\repository\ClientRepository;
+use App\repository\ReçuRepository;
+use App\service\ClientService;
+use App\service\ReçuService;
 
 class App{
     private static Array  $dependencies=[];
@@ -12,11 +14,11 @@ class App{
 
         self::registerDependance('router' , (new Router()));
         self::registerDependance('database' , Database::getInstance());
-        self::registerDependance('citoyenrepository' , CitoyenRepository::getInstance());
-        self::registerDependance('citoyenservice' , CitoyenService::getInstance());
+        self::registerDependance('clientrepository' , ClientRepository::getInstance());
+        self::registerDependance('clientservice' , ClientService::getInstance());
         self::registerDependance('session',Session::getInstance());
-       // self::registerDependance('journalrepository',JournalRepository::getInstance());
-       // self::registerDependance('journalservice',JournalService::getInstance());
+        self::registerDependance('reçurepository',ReçuRepository::getInstance());
+        self::registerDependance('reçuservice',ReçuService::getInstance());
       
 
     }

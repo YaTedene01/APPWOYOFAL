@@ -28,23 +28,25 @@ try {
     
     //requete sql
     $sql = <<<SQL
-    CREATE TABLE citoyen (
-        id SERIAL PRIMARY KEY,
-        nom VARCHAR(100) NOT NULL,
-        prenom VARCHAR(100) NOT NULL,
-        lieu_naissance VARCHAR(150) NOT NULL,
-        date_naissance DATE NOT NULL,
-        url_copie_carte_identite VARCHAR(255),
-        nci VARCHAR(50) UNIQUE NOT NULL
-    );
+    CREATE TABLE clients (
+    id SERIAL PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    prenom VARCHAR(100) NOT NULL,
+    numero_compteur VARCHAR(50) UNIQUE NOT NULL
+);
 
-    CREATE TABLE journal (
-        id SERIAL PRIMARY KEY,
-        date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        localisation VARCHAR(150),
-        adresse_ip VARCHAR(45),
-        statut VARCHAR(50)
-    );
+
+   CREATE TABLE recu (
+    id SERIAL PRIMARY KEY,
+    nom_client VARCHAR(100) NOT NULL,
+    prenom_client VARCHAR(100) NOT NULL,
+    numero_compteur VARCHAR(50) NOT NULL,
+    code_recharge VARCHAR(100) NOT NULL,
+    date TIMESTAMP NOT NULL,
+    prix NUMERIC(10,2) NOT NULL,
+    tranche VARCHAR(50) NOT NULL
+);
+
 SQL;
 
     // Exécution
