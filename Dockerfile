@@ -1,21 +1,27 @@
-FROM php:8.2-fpm
+# Utilise l'image PHP-FPM
+FROM php:8.3-fpm
 
-WORKDIR /var/www/html
-
-# Installation des extensions PostgreSQL
+# Installer les dépendances système + extensions PHP
 RUN apt-get update && apt-get install -y \
     libpq-dev \
-    && docker-php-ext-install pdo pdo_pgsql
+    unzip \
+    curl \
+    git \
+    && docker-php-ext-install pdo pdo_pgsql \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copie des fichiers du projet
-COPY --chown=www-data:www-data . .
+#  Installer Composer (copie depuis l'image officielle)
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Configuration du fichier d'environnement
-COPY --chown=www-data:www-data .env.docker .env
+# Définir le répertoire de travail
+WORKDIR /var/www/html
+
+# Copier les fichiers de l'application
+COPY . .
+
+# Configurer les permissions
+RUN chown -R www-data:www-data /var/www/html
+
 EXPOSE 9000
-# Debug et vérification
-RUN set -x && \
-    pwd && \
-    ls -la && \ 
-    ls -la .env && \ 
-    chmod 644 .env 
+
+CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
