@@ -11,4 +11,6 @@ return $routes = [
     ['POST', '/api/recu/generer', [ReçuController::class, 'genererRecu']],
     ['POST', '/api/client/achat-woyofal', [ClientController::class, 'acheterWoyofal']],
     ['POST', '/api/client/acheter', [ClientController::class, 'acheter']],
+    // Route API pour les données JSON
+    ['GET', '/api/reçus', ['ApiController', 'index']],
 ];

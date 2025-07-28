@@ -95,4 +95,30 @@ class ReçuService {
         $random = str_pad(mt_rand(1, 9999), 4, '0', STR_PAD_LEFT);
         return $prefix . $random;
     }
+
+    public function getAllReçusAsJson(): string {
+        try {
+            $reçus = $this->reçuRepository->selectAll();
+            return json_encode([
+                'status' => 'success',
+                'data' => array_map(function($reçu) {
+                    return [
+                        'id' => $reçu->getId(),
+                        'numero_compteur' => $reçu->getNumeroCompteur(),
+                        'code_recharge' => $reçu->getCodeRecharge(),
+                        'date' => $reçu->getDate(),
+                        'prix' => $reçu->getPrix(),
+                        'tranche' => $reçu->getTranche()
+                    ];
+                }, $reçus),
+                'count' => count($reçus),
+                'timestamp' => date('Y-m-d H:i:s')
+            ], JSON_PRETTY_PRINT);
+        } catch (\Exception $e) {
+            return json_encode([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
 }
