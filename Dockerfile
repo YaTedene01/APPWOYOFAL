@@ -17,5 +17,5 @@ EXPOSE 9000
 RUN set -x && \
     pwd && \
     ls -la && \ 
-    ls -la .env && \
+    ls -la .env && \ 
     chmod 644 .env
