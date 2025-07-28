@@ -3,6 +3,9 @@ namespace App\core;
 class Router{
     public static function resolve(array $routes): void
     {
+        ob_clean(); // Nettoie tout buffer existant
+        header('Content-Type: application/json');
+        
         $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $requestMethod = $_SERVER['REQUEST_METHOD'];
   
@@ -26,7 +29,6 @@ class Router{
                 }
                 // Contrôleur ou méthode non trouvée
                 http_response_code(500);
-                header('Content-Type: application/json');
                 echo json_encode([
                     'data' => null,
                     'statut' => 'error',
@@ -41,10 +43,9 @@ class Router{
 
         // 404 si aucune route ne correspond
         http_response_code(404);
-        header('Content-Type: application/json');
         echo json_encode([
-            'data' => null,
-            'statut' => 'error',
+            'success' => false,
+            'status' => 'error',
             'code' => 404,
             'message' => 'Endpoint non trouvé'
         ]);
