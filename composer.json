@@ -29,3 +29,4 @@
          "database:seed": "php seeders/seeder.php"
     }
 }
+ 
