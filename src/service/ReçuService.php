@@ -20,6 +20,13 @@ class ReçuService {
         $this->reçuRepository = App::getDependencie("reçurepository");
     }
 
+    public static function getInstance(): ReçuService {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
     private function determinerTranche(string $numero_compteur): string {
         $debut_mois = date('Y-m-01 00:00:00');
         $fin_mois = date('Y-m-t 23:59:59');
