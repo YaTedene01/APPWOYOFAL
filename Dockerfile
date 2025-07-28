@@ -16,6 +16,6 @@ EXPOSE 9000
 # Debug et vérification
 RUN set -x && \
     pwd && \
-    ls -la && \
+    ls -la && \ 
     ls -la .env && \
     chmod 644 .env
