@@ -9,10 +9,10 @@ class ReçuService {
     private ReçuRepository $reçuRepository;
     private static ?ReçuService $instance = null;
 
-    // Constantes pour les tranches
-    const TRANCHE_1_LIMIT = 150; // 0-150 kWh
-    const TRANCHE_2_LIMIT = 250; // 151-250 kWh
-    const TRANCHE_1_PRICE = 91.17; // Prix par kWh en FCFA
+    // Constants for pricing tiers
+    const TRANCHE_1_LIMIT = 150;
+    const TRANCHE_2_LIMIT = 250;
+    const TRANCHE_1_PRICE = 91.17;
     const TRANCHE_2_PRICE = 136.49;
     const TRANCHE_3_PRICE = 149.06;
 
@@ -51,21 +51,43 @@ class ReçuService {
         return $this->reçuRepository->getSommeConsommation($numero_compteur, $debut, $fin);
     }
 
-    public function genererRecu(string $numero_compteur, float $montant): ?Reçu {
-        $tranche = $this->determinerTranche($numero_compteur);
-        $code_recharge = $this->genererCodeRecharge();
-        
-        $recu = new Reçu();
-        $recu->setNumeroCompteur($numero_compteur)
-             ->setPrix($montant)
-             ->setDate(date('Y-m-d H:i:s'))
-             ->setCodeRecharge($code_recharge)
-             ->setTranche($tranche);
-
-        if ($this->reçuRepository->save($recu)) {
-            return $recu;
+    public function handleApiResponse($response): array {
+        try {
+            $decodedResponse = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+            return [
+                'success' => true,
+                'data' => $decodedResponse
+            ];
+        } catch (\JsonException $e) {
+            return [
+                'success' => false,
+                'error' => 'Invalid JSON response',
+                'message' => $e->getMessage()
+            ];
         }
-        return null;
+    }
+
+    public function genererRecu(string $numero_compteur, float $montant): ?Reçu {
+        try {
+            $tranche = $this->determinerTranche($numero_compteur);
+            $code_recharge = $this->genererCodeRecharge();
+            
+            $recu = new Reçu();
+            $recu->setNumeroCompteur($numero_compteur)
+                 ->setPrix($montant)
+                 ->setDate(date('Y-m-d H:i:s'))
+                 ->setCodeRecharge($code_recharge)
+                 ->setTranche($tranche);
+
+            if ($this->reçuRepository->save($recu)) {
+                return $recu;
+            }
+            return null;
+        } catch (\Exception $e) {
+            // Log error and return null
+            error_log("Error generating receipt: " . $e->getMessage());
+            return null;
+        }
     }
 
     private function genererCodeRecharge(): string {
