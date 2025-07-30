@@ -95,4 +95,13 @@ class ReçuService {
         $random = str_pad(mt_rand(1, 9999), 4, '0', STR_PAD_LEFT);
         return $prefix . $random;
     }
+
+    public function sauvegarderRecu(Reçu $recu): bool {
+        try {
+            return $this->reçuRepository->save($recu);
+        } catch (\Exception $e) {
+            error_log("Erreur lors de la sauvegarde du reçu: " . $e->getMessage());
+            return false;
+        }
+    }
 }

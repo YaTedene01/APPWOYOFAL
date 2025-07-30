@@ -39,23 +39,30 @@ class ClientController extends AbstractController {
 
         if ($recu) {
             // Sauvegarder le reçu
-            $this->reçuService->sauvegarderRecu($recu);
-            
-            http_response_code(200);
-            echo json_encode([
-                'statut' => 'success',
-                'message' => 'Achat effectué avec succès',
-                'code' => 200,
-                'data' => [
-                    'nomClient' => $recu->getNomClient(),
-                    'prenomClient' => $recu->getPrenomClient(),
-                    'numero_compteur' => $recu->getNumeroCompteur(),
-                    'codeRecharge' => $recu->getCodeRecharge(),
-                    'date' => $recu->getDate(),
-                    'prix' => $recu->getPrix(),
-                    'tranche' => $recu->getTranche()
-                ]
-            ]);
+            if ($this->reçuService->sauvegarderRecu($recu)) {
+                http_response_code(200);
+                echo json_encode([
+                    'statut' => 'success',
+                    'message' => 'Achat effectué avec succès',
+                    'code' => 200,
+                    'data' => [
+                        'nomClient' => $recu->getNomClient(),
+                        'prenomClient' => $recu->getPrenomClient(),
+                        'numero_compteur' => $recu->getNumeroCompteur(),
+                        'codeRecharge' => $recu->getCodeRecharge(),
+                        'date' => $recu->getDate(),
+                        'prix' => $recu->getPrix(),
+                        'tranche' => $recu->getTranche()
+                    ]
+                ]);
+            } else {
+                http_response_code(500);
+                echo json_encode([
+                    'statut' => 'error',
+                    'message' => 'Erreur lors de la sauvegarde du reçu',
+                    'code' => 500
+                ]);
+            }
         } else {
             http_response_code(404);
             echo json_encode([
